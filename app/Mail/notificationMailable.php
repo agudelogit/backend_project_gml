@@ -17,7 +17,6 @@ class notificationMailable extends Mailable
     {
         //
     }
-
    
     public function envelope()
     {
@@ -25,13 +24,11 @@ class notificationMailable extends Mailable
             subject: 'Notificación de registro',
         );
     }
-
    
     public function content()
     {
         return new Content( view: 'emails.notificacion', );
     }
-
    
     public function attachments()
     {

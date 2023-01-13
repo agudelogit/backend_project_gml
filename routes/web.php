@@ -1,6 +1,8 @@
 <?php
 
+use App\Mail\notificationAdminMailable;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/mail', function () {
+    $correo = new notificationAdminMailable;
+    Mail::to('donroque1990@gmail.com')->send( $correo );
+    echo "mensaje enviado";
 });

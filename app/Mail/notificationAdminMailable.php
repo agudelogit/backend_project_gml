@@ -13,6 +13,8 @@ use App\Models\User;
 class notificationAdminMailable extends Mailable
 {
     use Queueable, SerializesModels;
+    public $users;
+    public $paises;
    
     /**
      * Create a new message instance.
@@ -21,7 +23,28 @@ class notificationAdminMailable extends Mailable
      */
     public function __construct()
     {
-        //
+        $this->users = User::selectRaw('pais, count(*) as total')
+        ->groupBy('pais')
+        ->get();
+        
+        $this->paises = array(
+            "32" => "Argentina",
+            "68" => "Bolivia (Plurinational State of)",
+            "76" => "Brazil",
+            "152" => "Chile",
+            "170" => "Colombia",
+            "218" => "Ecuador",
+            "238" => "Falkland Islands (Malvinas)",
+            "254" => "French Guiana",
+            "328" => "Guyana",
+            "600" => "Paraguay",
+            "604" => "Peru",
+            "239" => "South Georgia and the South Sandwich Islands",
+            "740" => "Suriname",
+            "858" => "Uruguay",
+            "862" => "Venezuela (Bolivarian Republic of)"
+            );
+               
     }
 
     /**
@@ -31,6 +54,7 @@ class notificationAdminMailable extends Mailable
      */
     public function envelope()
     {
+        
         return new Envelope(
             subject: 'Notificación de registro para Administrador',
         );
@@ -42,9 +66,9 @@ class notificationAdminMailable extends Mailable
      * @return \Illuminate\Mail\Mailables\Content
      */
     public function content()
-    {
-        $users = User::where('id', '!=', 1)->get();
-        return view( 'emails.notificacionAdmin', $users );
+    {        
+        
+        return new Content( view: 'emails.notificacionAdmin', );
     }
 
     /**
